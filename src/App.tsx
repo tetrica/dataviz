@@ -1,11 +1,12 @@
 import { ThemeProvider } from "@/components/theme-provider";
 import Layout from "./components/layout";
+import Routes from "./components/routes";
 
 function App() {
   return (
     <ThemeProvider>
       <Layout>
-        <h1 className="text-3xl font-bold underline">Hello world!</h1>
+        <Routes />
       </Layout>
     </ThemeProvider>
   );
