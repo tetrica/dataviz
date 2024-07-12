@@ -1,25 +1,30 @@
 import { Key } from "./typings";
 
 function sumByNestedKeys<T extends Record<Key, any>>(
-  data: Record<string, Record<string, T[]>>,
+  data: Map<string, Map<string, T[]>>,
   sumKey: Key
 ) {
-  return Object.entries(data).reduce((accumulator, [key, nestedData]) => {
+  const totalsByGroup: { xAxis: Key; [key: string]: number | Key }[] = [];
+
+  data.forEach((nestedData, key) => {
+    let total = 0;
     const item = {
       xAxis: key as Key,
     } as { xAxis: Key; [key: string]: number | Key };
 
-    Object.entries(nestedData).forEach(([subKey, subValue]) => {
-      const totalSum = subValue.reduce(
+    nestedData.forEach((value, subKey) => {
+      total += value.reduce(
         (sum, entry) => sum + ((entry[sumKey] as number) || 0),
         0
       );
-      item[subKey] = totalSum;
+
+      item[subKey] = total;
     });
 
-    accumulator.push(item);
-    return accumulator;
-  }, [] as { xAxis: Key; [key: string]: number | Key }[]);
+    totalsByGroup.push(item);
+  });
+
+  return totalsByGroup;
 }
 
 export default sumByNestedKeys;

@@ -4,7 +4,7 @@ import sumGroupedByKey from "../sumGroupedByKey";
 import sumByNestedKeys from "../sumGroupedByMultipleKeys";
 
 function useAggregatedData<T extends Record<Key, any>>(
-  groupedData: Record<string, T[]> | Record<string, Record<string, T[]>>,
+  groupedData: Map<string, T[]> | Map<string, Map<string, T[]>>,
   somarPor: Key,
   visualizarPor: Key,
   detalharPor?: Key

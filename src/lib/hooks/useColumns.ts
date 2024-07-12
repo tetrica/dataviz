@@ -3,7 +3,7 @@ import { Key, isNestedGroups } from "../typings";
 import { ColumnDef } from "@tanstack/react-table";
 
 function useColumns<T extends Record<Key, any>>(
-  groupedData: Record<string, T[]> | Record<string, Record<string, T[]>>,
+  groupedData: Map<string, T[]> | Map<string, Map<string, T[]>>,
   somarPor: Key,
   visualizarPor: Key,
   detalharPor?: Key
@@ -14,9 +14,13 @@ function useColumns<T extends Record<Key, any>>(
     }
 
     if (isNestedGroups(groupedData, detalharPor)) {
-      const keys = new Set<string>(
-        Object.values(groupedData).flatMap((v) => Object.keys(v))
-      );
+      const keys = new Set<string>();
+
+      groupedData.forEach((nested) => {
+        nested.forEach((_value, key) => {
+          keys.add(key);
+        });
+      });
 
       const columns: ColumnDef<T, unknown>[] = [
         {
@@ -31,7 +35,7 @@ function useColumns<T extends Record<Key, any>>(
 
       keys.forEach((key) => {
         columns.push({
-          accessorKey: key,
+          accessorKey: key + "",
           header: key,
           cell: ({ row }) => row.original?.[key] ?? "",
           footer: ({ table }) => {

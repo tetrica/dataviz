@@ -1,16 +1,17 @@
 import { Key } from "./typings";
 
 function groupBy<T extends Record<Key, any>>(data: T[], key: Key) {
-  return data.reduce((accumulator, currentObject) => {
-    const keyValue = currentObject[key];
+  const groupedData: Map<string, T[]> = new Map();
 
-    if (!accumulator[keyValue]) {
-      accumulator[keyValue] = [];
+  for (const item of data) {
+    const keyValue = item[key];
+    if (!groupedData.has(keyValue)) {
+      groupedData.set(keyValue, []);
     }
+    groupedData.get(keyValue)?.push(item);
+  }
 
-    accumulator[keyValue].push(currentObject);
-    return accumulator;
-  }, {} as Record<string, T[]>);
+  return groupedData;
 }
 
 export default groupBy;

@@ -1,15 +1,19 @@
 import { Key } from "./typings";
 
 function sumGroupedByKey<T extends Record<Key, any>>(
-  data: Record<string, T[]>,
+  data: Map<string, T[]>,
   sumKey: Key,
   groupedBy: Key
 ) {
-  return Object.entries(data).reduce((accumulator, [key, value]) => {
-    const sum = value.reduce((acc, item) => acc + item[sumKey], 0);
-    accumulator.push({ xAxis: key, [groupedBy]: sum });
-    return accumulator;
-  }, [] as Record<string, unknown>[]);
+  let total = 0;
+  const totalsByGroup: Record<string, unknown>[] = [];
+
+  data.forEach((value, key) => {
+    total += value.reduce((acc, item) => acc + item[sumKey], 0);
+    totalsByGroup.push({ [groupedBy]: total, xAxis: key });
+  });
+
+  return totalsByGroup;
 }
 
 export default sumGroupedByKey;

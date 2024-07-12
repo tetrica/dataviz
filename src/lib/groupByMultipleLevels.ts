@@ -12,10 +12,14 @@ function groupByMultipleLevels<T extends Record<Key, any>>(
     return groupedData;
   }
 
-  return Object.entries(groupedData).reduce((accumulator, [key, value]) => {
-    accumulator[key] = groupBy(value, secondLevelKey);
-    return accumulator;
-  }, {} as Record<string, Record<string, T[]>>);
+  const nestedGroupedData: Map<string, Map<string, T[]>> = new Map();
+
+  for (const [key, value] of groupedData) {
+    const nestedGroupedDataForKey = groupBy(value, secondLevelKey);
+    nestedGroupedData.set(key, nestedGroupedDataForKey);
+  }
+
+  return nestedGroupedData;
 }
 
 export default groupByMultipleLevels;

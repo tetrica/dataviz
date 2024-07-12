@@ -3,7 +3,7 @@ import { Key, isNestedGroups } from "../typings";
 import useGenColors from "./useGenColors";
 
 function useChartConfig<T extends Record<Key, any>>(
-  groupedData: Record<string, T[]> | Record<string, Record<string, T[]>>,
+  groupedData: Map<string, T[]> | Map<string, Map<string, T[]>>,
   visualizarPor: Key,
   detalharPor?: Key
 ) {
@@ -28,25 +28,24 @@ function useChartConfig<T extends Record<Key, any>>(
       };
     }
 
-    return Object.values(groupedData).reduce(
-      (accumulator, value) => {
-        const keys = new Set<string>(Object.keys(value));
-        keys.forEach((subKey) => {
-          accumulator[subKey] = {
-            label: subKey,
-            color: genColor(),
-          };
-        });
+    const config: {
+      [key: string]: {
+        label: string;
+        color: `hsl(${string})`;
+      };
+    } = {};
 
-        return accumulator;
-      },
-      {} as {
-        [key: string]: {
-          label: string;
-          color: `hsl(${string})`;
+    groupedData.forEach((value) => {
+      const keys = new Set<string>(value.keys());
+      keys.forEach((subKey) => {
+        config[subKey] = {
+          label: subKey,
+          color: genColor(),
         };
-      }
-    );
+      });
+    });
+
+    return config;
   }, [groupedData, visualizarPor, detalharPor, genColor]);
 }
 

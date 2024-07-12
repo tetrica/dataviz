@@ -2,8 +2,8 @@ export type Key = string | number | symbol;
 
 export function isNestedGroups<T extends Record<Key, any>>(
   // @ts-ignore
-  data: Record<string, T[]> | Record<string, Record<string, T[]>>,
+  data: Map<string, T[]> | Map<string, Map<string, T[]>>,
   secondLevelKey?: Key
-): data is Record<string, Record<string, T[]>> {
+): data is Map<string, Map<string, T[]>> {
   return secondLevelKey !== undefined;
 }
