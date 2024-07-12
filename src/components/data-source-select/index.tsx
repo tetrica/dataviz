@@ -36,8 +36,13 @@ function DataSourceSelect() {
     if (selectedDatasource === "other" && !url) {
       return "URL é obrigatória.";
     }
-    const pattern = new RegExp("^(https?:\\/\\/)?");
-    return pattern.test(url) || "URL inválida.";
+
+    try {
+      new URL(url);
+      return true;
+    } catch (error) {
+      return "URL inválida.";
+    }
   };
 
   const onSubmit = (data: FormData) => {
