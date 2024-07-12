@@ -37,12 +37,7 @@ function DataSourceSelect() {
       return "URL é obrigatória.";
     }
 
-    try {
-      new URL(url);
-      return true;
-    } catch (error) {
-      return "URL inválida.";
-    }
+    return URL.canParse(url) || "URL inválida.";
   };
 
   const onSubmit = (data: FormData) => {
