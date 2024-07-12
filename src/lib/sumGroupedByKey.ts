@@ -5,11 +5,10 @@ function sumGroupedByKey<T extends Record<Key, any>>(
   sumKey: Key,
   groupedBy: Key
 ) {
-  let total = 0;
   const totalsByGroup: Record<string, unknown>[] = [];
 
   data.forEach((value, key) => {
-    total += value.reduce((acc, item) => acc + item[sumKey], 0);
+    const total = value.reduce((acc, item) => acc + item[sumKey], 0);
     totalsByGroup.push({ [groupedBy]: total, xAxis: key });
   });
 

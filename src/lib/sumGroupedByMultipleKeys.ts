@@ -7,13 +7,12 @@ function sumByNestedKeys<T extends Record<Key, any>>(
   const totalsByGroup: { xAxis: Key; [key: string]: number | Key }[] = [];
 
   data.forEach((nestedData, key) => {
-    let total = 0;
     const item = {
       xAxis: key as Key,
     } as { xAxis: Key; [key: string]: number | Key };
 
     nestedData.forEach((value, subKey) => {
-      total += value.reduce(
+      const total = value.reduce(
         (sum, entry) => sum + ((entry[sumKey] as number) || 0),
         0
       );
