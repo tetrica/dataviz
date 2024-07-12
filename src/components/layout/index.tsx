@@ -9,7 +9,7 @@ function Layout({ children }: LayoutProps) {
     <div className="grid grid-rows-layout h-screen gap-4">
       <Header />
 
-      {children}
+      <div className="p-4 flex flex-col items-center">{children}</div>
     </div>
   );
 }
